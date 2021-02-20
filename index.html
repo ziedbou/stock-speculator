@@ -33,17 +33,17 @@
                     //BUILD HYSTORY FOR SOME CASES
                     if (curr_profit > profit) {
 
-                    	//INIT NESTED OBJECT
+                        //INIT NESTED OBJECT
                         history[curr_profit] = { days: 0, children: {} }
 
                         //DAYS COMBINATION
                         history[curr_profit].days = i + '-' + j;
-                        
+
                         //NESTED PROFIT
-                        history[curr_profit].children = next_days_profit.history; 
+                        history[curr_profit].children = next_days_profit.history;
 
                         // CURRENT PROFIT IN THIS TRANSACTION
-                        history[curr_profit].curr_profit = prices_list[j] - prices_list[i]; 
+                        history[curr_profit].curr_profit = prices_list[j] - prices_list[i];
                     }
                     // GET MAX PROFIT
                     profit = Math.max(profit, curr_profit);
@@ -74,21 +74,21 @@
 
         //CALL FUNCTION RECURSIVLY WE STILL HAVE NESTED VALUES
         if (Object.keys(history[max_profit].children).length > 0) {
-        	next_profit = getBestPath(history[max_profit].children);
+            next_profit = getBestPath(history[max_profit].children);
             best_path.push(...next_profit)
         }
 
         return best_path;
     }
 
-    
+
     /**
-    * MAIN FUNCTION
-    * @prices_list : ARRAY OF PRICES
-    */
+     * MAIN FUNCTION
+     * @prices_list : ARRAY OF PRICES
+     */
     function getMaxProfit(prices_list = []) {
-      
-    	//FIND BEST PROFIT AND BEST PATH
+
+        //FIND BEST PROFIT AND BEST PATH
         let calcule = findMaxProfitInArray(prices_list, 1, 0, prices_list.length - 1);
         let best_path = getBestPath(calcule.history);
 
@@ -103,7 +103,5 @@
     let prices_list = [190, 59, 69, 60, 360, 140, 535, 695, 700, 40, 500, 590, 600, 650];
 
     getMaxProfit(prices_list);
-
-
     </script>
 </body>
