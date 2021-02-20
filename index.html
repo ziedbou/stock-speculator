@@ -92,7 +92,7 @@
         let calcule = findMaxProfitInArray(prices_list, 1, 0, prices_list.length - 1);
         let best_path = getBestPath(calcule.history);
 
-        let result = { days: best_path, profit: calcule.profit };
+        let result = { days: best_path, total_profit: calcule.profit };
 
         console.info(result);
 
