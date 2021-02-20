@@ -1,0 +1,109 @@
+<body>
+    <script>
+    /**
+     * FUNCTION BEST PROFIT IN ARRAY
+     * @prices_list : ARRAY OF PRICES
+     * @level : JUST FOR INDICATION 
+     * @first_index : FIRST INDEX OF THE ARRAY TO MAP
+     * @last_index : LAST INDEX OF THE ARRAY TO MAP
+     */
+    function findMaxProfitInArray(prices_list = [], level = 1, first_index, last_index) {
+
+        //INIT PROFIT
+        let profit = 0;
+        //INIT HISTORY
+        let history = {};
+
+        // Stop condition
+        if (last_index <= first_index)
+            return { profit, history };
+
+        // CHECK DIFFERENT PATHS :  DAY BY DAY
+        for (let i = first_index; i < last_index; i++) {
+
+            for (let j = i + 1; j <= last_index; j++) {
+
+                if (prices_list[j] > prices_list[i]) {
+
+                    //FIND CURRENT PROFIT
+                    let next_days_profit = findMaxProfitInArray(prices_list, level + 1, j + 1, last_index);
+
+                    let curr_profit = prices_list[j] - prices_list[i] + next_days_profit.profit;
+
+                    //BUILD HYSTORY FOR SOME CASES
+                    if (curr_profit > profit) {
+
+                    	//INIT NESTED OBJECT
+                        history[curr_profit] = { days: 0, children: {} }
+
+                        //DAYS COMBINATION
+                        history[curr_profit].days = i + '-' + j;
+                        
+                        //NESTED PROFIT
+                        history[curr_profit].children = next_days_profit.history; 
+
+                        // CURRENT PROFIT IN THIS TRANSACTION
+                        history[curr_profit].curr_profit = prices_list[j] - prices_list[i]; 
+                    }
+                    // GET MAX PROFIT
+                    profit = Math.max(profit, curr_profit);
+                }
+            }
+        }
+
+        return { profit, history };
+    }
+
+
+    /**
+     * FUNCTION GET BEST PATH
+     * @history : NESTED JSON
+     */
+    function getBestPath(history) {
+        let best_path = [];
+        let keys = Object.keys(history); // GET ALL PROFIT VALUES
+        let max_profit = Math.max(...keys); //FIND MAX PROFIT IN THE PATH
+        let days = history[max_profit].days.split('-'); //SPLIT DAYS COMBINAITON
+
+        //PUSH BEST PATH
+        best_path.push({
+            buy_day_index: days[0],
+            sell_day_index: days[1],
+            profit_value: history[max_profit].curr_profit
+        });
+
+        //CALL FUNCTION RECURSIVLY WE STILL HAVE NESTED VALUES
+        if (Object.keys(history[max_profit].children).length > 0) {
+        	next_profit = getBestPath(history[max_profit].children);
+            best_path.push(...next_profit)
+        }
+
+        return best_path;
+    }
+
+    
+    /**
+    * MAIN FUNCTION
+    * @prices_list : ARRAY OF PRICES
+    */
+    function getMaxProfit(prices_list = []) {
+      
+    	//FIND BEST PROFIT AND BEST PATH
+        let calcule = findMaxProfitInArray(prices_list, 1, 0, prices_list.length - 1);
+        let best_path = getBestPath(calcule.history);
+
+        let result = { days: best_path, profit: calcule.profit };
+
+        console.info(result);
+
+        return result;
+    }
+
+    //TIME TO EXECUTE MAGIC FUNCTION
+    let prices_list = [190, 59, 69, 60, 360, 140, 535, 695, 700, 40, 500, 590, 600, 650];
+
+    getMaxProfit(prices_list);
+
+
+    </script>
+</body>
