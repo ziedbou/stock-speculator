@@ -89,6 +89,9 @@
     function getMaxProfit(prices_list = []) {
 
         //FIND BEST PROFIT AND BEST PATH
+        if(prices_list.length == 0)
+            return 'Give me data please';
+        
         let calcule = findMaxProfitInArray(prices_list, 1, 0, prices_list.length - 1);
         let best_path = getBestPath(calcule.history);
 
