@@ -7,6 +7,15 @@ Write a function that returns the day on which to buy, the day on which to sell,
 ``` javascript
 let data = [190, 59, 69, 60, 360, 140, 535, 695, 700, 40, 500, 590, 600, 650]
 ```
+
+
+## How to execute :
+Just call the function within data
+``` javascript
+getMaxProfit(prices_list);
+```
+
+
 ## Response 
 ``` javascript
 {
